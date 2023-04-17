@@ -1,4 +1,13 @@
 package com.eoi.Facturacion.repositories;
 
-public interface InvoiceRepository {
+import com.eoi.Facturacion.entities.Invoice;
+import com.eoi.Facturacion.entities.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
+    //Declaramos el método aquí para que funcione en el InvoiceService
+    //El JpaRepository ya tiene los métodos básicos del CRUD - implementamos el método findByName
+    //JPA nos permite asumir que el método, vamos a crear una QUERY para buscar algo por el nombre en la BD
 }
