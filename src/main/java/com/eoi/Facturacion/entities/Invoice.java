@@ -24,7 +24,9 @@ public class Invoice {
     @Column (name = "date")
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private String codigoFactura;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_customer")  //Foreign key que une con la entidad que se va a relacionar
     private Customer invoiceToCustomer;
 }

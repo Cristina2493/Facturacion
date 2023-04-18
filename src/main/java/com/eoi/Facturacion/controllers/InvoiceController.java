@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 //Request -cualquier tipo de request es bueno (get/post/put/delete)
 @RequestMapping("/invoices") //Al ponerlo antes de la clase, cualquier método que tenga esta clase va a tener este prefijo
@@ -35,8 +37,13 @@ public class InvoiceController {
     }
     @GetMapping("/edit/{id}")
     public String showEditInvoiceForm(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("invoice", invoiceService.findById(id));
-        return "invoice-form";
+        Optional<Invoice> invoice = invoiceService.findById(id);
+        if(invoice.isPresent())
+        {
+            model.addAttribute("invoice", invoice.get());
+            return "customer-invoice-form";
+        }
+        return "error";
     }
     @GetMapping("/delete/{id}")
     public String deleteInvoice(@PathVariable("id") Long id) {
