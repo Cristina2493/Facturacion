@@ -33,6 +33,14 @@ public class Customer {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "invoiceToCustomer", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //Para llamar al objeto Customer invoiceToCustomer de la entidad Invoice
-    private List<Invoice> invoiceList = new ArrayList<>();
+    private List<Invoice> invoiceList;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Subscription> subscriptions;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Contract> contracts;
 
 }

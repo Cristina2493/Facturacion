@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 //Request -cualquier tipo de request es bueno (get/post/put/delete)
 @RequestMapping("/products") //Al ponerlo antes de la clase, cualquier método que tenga esta clase va a tener este prefijo
@@ -23,20 +25,35 @@ public class ProductController {
         return "product-list";
     }
 
+    @GetMapping("/{id}")
+    public String getContractById(@PathVariable Long id, Model model) {
+        Optional<Product> product = productService.findById(id);
+        if(product.isPresent())
+        {
+            model.addAttribute("product", product.get());
+            return "product";
+        }
+        return "error";
+    }
+
     @GetMapping("/new") //Haces petición en la que esperas que te devuelvan datos
     public String showNewProductForm(Model model) {
         model.addAttribute("product", new Product());
         return "product-form"; //Te devuelve un nuevo objeto tipo Product ya rellenado y para que la guarde en la BD
     }
     @PostMapping("/save") //Haces una petición en la que envías datos
-    public String saveProduct(@ModelAttribute("product") Product product) {
+    public String saveProduct(Product product) {
         productService.save(product);
         return "redirect:/products/"; //Postear ese producto en la BD y redirigir a la lista de productos
     }
     @GetMapping("/edit/{id}")
     public String showEditProductForm(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("product", productService.findById(id));
-        return "product-form";
+        Optional product = productService.findById(id);
+        if(product.isPresent()) {
+            model.addAttribute("product", product.get());
+            return "product-form";
+        }
+        return "error";
     }
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long id) {
